@@ -28,7 +28,8 @@ def index():
             return redirect('/')
 
         except:
-            return 'there was an issue saving your task to the DBtask id: {0}'.format(new_task.id)
+            return 'there was an issue saving your task to the DBtask id: {0}' \
+                    .format(new_task.id)
     else:
         tasks = ToDo.query.order_by(ToDo.date_created).all()
         return render_template('index.html', tasks=tasks)
@@ -43,8 +44,27 @@ def delete(id):
         return redirect('/')
 
     except:
-        return 'there was an issue deleting your task to the DB; task id: {0}'.format(task_to_delete.id)
+        return 'there was an issue deleting your task to the DB; task id: {0}' \
+                .format(task_to_delete.id)
 
+@app.route('/update/<int:id>', methods=['GET','POST'])
+def update(id):
+    
+    task = ToDo.query.get_or_404(id)
+
+    if request.method == 'POST':
+        task.content = request.form['content']
+
+        try:
+            db.session.commit()
+            return redirect('/')
+            
+        except:
+            return 'there was an issue updating your task to the DB; task id: {0}' \
+                .format(task.id)
+    else:
+        return render_template('update.html', task=task)
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
