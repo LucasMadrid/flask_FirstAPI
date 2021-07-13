@@ -16,7 +16,6 @@ class toDo(db.Model):
         return '<Task %r>' %self.id
 
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
