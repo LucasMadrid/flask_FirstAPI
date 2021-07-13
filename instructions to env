@@ -1,0 +1,10 @@
+python -m virtualenv venv
+
+The only workable approach I could figure out (with help from @Gator_Python was to do python -m virtualenv venv. 
+This creates the virtual environment and works as expected.
+
+
+cd [directory of the env]
+.\Scripts\Activate
+
+pip install flask flask-sqlalchemy
