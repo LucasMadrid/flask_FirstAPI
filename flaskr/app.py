@@ -25,13 +25,26 @@ def index():
         try:
             db.session.add(new_task)
             db.session.commit()
-            
             return redirect('/')
+
         except:
-            return 'there was an issue trying to save your task to the DB'
+            return 'there was an issue saving your task to the DBtask id: {0}'.format(new_task.id)
     else:
         tasks = ToDo.query.order_by(ToDo.date_created).all()
         return render_template('index.html', tasks=tasks)
+
+@app.route('/delete/<int:id>')
+def delete(id):
+    task_to_delete = ToDo.query.get_or_404(id)
+
+    try:
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        return redirect('/')
+
+    except:
+        return 'there was an issue deleting your task to the DB; task id: {0}'.format(task_to_delete.id)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
